@@ -1,8 +1,6 @@
-const express = require('express');
-const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const authMiddleware = require('../middlewares/authMiddleware');
+const jwt = require('jsonwebtoken');
 
 // Autentica login de usuário
 const postLogin = async (req, res) => {
@@ -41,11 +39,11 @@ const postUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await User.create({
-        email,
-        password: hashedPassword,
-        cpf,
-        address,
-        isAdmin: true
+            email,
+            password: hashedPassword,
+            cpf,
+            address,
+            isAdmin: true
         });
 
         // Retorna o usuário sem a senha
@@ -80,7 +78,7 @@ const getUserById = async (req, res) => {
 
 const updateUserById = async (req, res) => {
     try {
-        const { email, cpf, address } = req.body;
+        const { email, cpf, address, password } = req.body;
         const user = await User.findByPk(req.params.id);
         
         if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -88,6 +86,12 @@ const updateUserById = async (req, res) => {
         user.email = email || user.email;
         user.cpf = cpf || user.cpf;
         user.address = address || user.address;
+        user.password = password || user.password;
+
+        // Gera criptografia de senha caso a mesma tenha sido alterada
+        if (password) {
+            user.password = await bcrypt.hash(password, 10);
+        }
 
         await user.save();
 
@@ -96,7 +100,7 @@ const updateUserById = async (req, res) => {
 
         res.json(userResponse);
     } catch (err) {
-        res.status(400).json({ error: 'Erro ao atualizar usuário', details: err.message });
+        res.status(400).json({ error: 'Erro ao atualizar usuário' });
     }
 }
 
