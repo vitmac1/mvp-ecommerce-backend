@@ -69,7 +69,7 @@ const getAllUsers = async (req, res) => {
 
 // Buscar usuário por id
 const getUserById = async (req, res) => {
-    try {
+    try {   
         const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password'] } });
         if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
         res.json(user);

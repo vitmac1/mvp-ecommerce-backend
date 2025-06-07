@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/sequelize'); // Vamos criar esse arquivo no próximo passo
+const sequelize = require('../config/sequelize');
 
 const User = sequelize.define('User', {
   id: {
