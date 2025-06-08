@@ -4,29 +4,30 @@ const jwt = require('jsonwebtoken');
 
 // Autentica login de usuário
 const postLogin = async (req, res) => {
+    debugger;
     const { email, password } = req.body;
 
     try {
-    const user = await User.findOne({ where: { email } });
+        const user = await User.findOne({ where: { email } });
 
-    if (!user)
-        return res.status(401).json({ error: 'Usuário não encontrado' });
+        if (!user)
+            return res.status(401).json({ error: 'Usuário não encontrado' });
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid)
-        return res.status(401).json({ error: 'Senha inválida' });
+        if (!isPasswordValid)
+            return res.status(401).json({ error: 'Senha inválida' });
 
-    // Gerar o token
-    const token = jwt.sign(
-        { id: user.id, email: user.email, isAdmin: user.isAdmin },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
-    );
+        // Gerar o token
+        const token = jwt.sign(
+            { id: user.id, email: user.email, isAdmin: user.isAdmin },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
+        );
 
-    res.json({ token });
+        res.json({ token });
     } catch (err) {
-    res.status(500).json({ error: 'Erro no login', details: err.message });
+        res.status(500).json({ error: 'Erro no login', details: err.message });
     }
 }
 
@@ -43,7 +44,7 @@ const postUser = async (req, res) => {
             password: hashedPassword,
             cpf,
             address,
-            isAdmin: true
+            isAdmin: false,
         });
 
         // Retorna o usuário sem a senha
