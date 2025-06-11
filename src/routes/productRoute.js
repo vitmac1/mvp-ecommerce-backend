@@ -15,8 +15,8 @@ const { upload } = require('../utils/multerStorage');
 router.get('/getAllProducts', authMiddleware, getAllProducts);
 router.get('/getAllProductsByQuery/:query', authMiddleware, getProductsByQuery);
 router.get('/getProductById/:id', authMiddleware, getProductById);
-router.post('/createProduct', adminMiddleware, upload.single('image'), createProduct);
-router.put('/updateProduct/:id', adminMiddleware, updateProduct);
-router.delete('/deleteProduct/:id', adminMiddleware, deleteProduct);
+router.post('/createProduct', authMiddleware, adminMiddleware, upload.single('image'), createProduct);
+router.put('/updateProduct/:id', authMiddleware, adminMiddleware, updateProduct);
+router.delete('/deleteProduct/:id', authMiddleware, adminMiddleware, deleteProduct);
 
 module.exports = router;

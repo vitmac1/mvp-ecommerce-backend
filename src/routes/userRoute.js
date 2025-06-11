@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { adminMiddleware } = require('../middleware/auth');
-const { 
-    getAllUsers, 
-    getUserById, 
-    updateUserById, 
+const { authMiddleware, adminMiddleware } = require('../middleware/auth');
+const {
+    getAllUsers,
+    getUserById,
+    updateUserById,
     deleteUserById,
     postLogin,
     postUser
@@ -17,9 +17,9 @@ router.post('/registerUser', postUser);
 router.post('/login', postLogin);
 
 // Rotas protegidas
-router.get('/getAllUsers', adminMiddleware, getAllUsers);
-router.get('/getUserById/:id', adminMiddleware, getUserById);
-router.put('/updateUserById/:id', adminMiddleware, updateUserById);
-router.delete('/deleteUserById/:id', adminMiddleware, deleteUserById);
+router.get('/getAllUsers', authMiddleware, adminMiddleware, getAllUsers);
+router.get('/getUserById/:id', authMiddleware, adminMiddleware, getUserById);
+router.put('/updateUserById/:id', authMiddleware, adminMiddleware, updateUserById);
+router.delete('/deleteUserById/:id', authMiddleware, adminMiddleware, deleteUserById);
 
 module.exports = router;

@@ -1,14 +1,15 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/sequelize');
+const { DataTypes } = require("sequelize");
 
-const OrderItem = sequelize.define('OrderItem', {
-    quantity: DataTypes.INTEGER,
-    unitPrice: DataTypes.DECIMAL(10,2)
-});
-
-OrderItem.associate = (models) => {
-    OrderItem.belongsTo(models.Order);
-    OrderItem.belongsTo(models.Product);
+module.exports = (sequelize) => {
+    return sequelize.define(
+        "OrderItem",
+        {
+            quantity: DataTypes.INTEGER,
+            unitPrice: DataTypes.DECIMAL(10, 2),
+        },
+        {
+            tableName: "order_item",
+            timestamps: true,
+        }
+    );
 };
-
-module.exports = OrderItem;
