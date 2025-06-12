@@ -2,7 +2,7 @@ const { CartItem, Product, Order, OrderItem } = require("../models/models");
 
 const createOrder = async (req, res) => {
     const userId = req.user.id;
-    const { shippingAdress, shippingCost } = req.body;
+    const { shippingAddress, shippingCost, paymentMethod } = req.body;
 
     try {
         const cartItens = await CartItem.findAll({
@@ -21,7 +21,8 @@ const createOrder = async (req, res) => {
             userId,
             total,
             shippingCost,
-            shippingAdress,
+            shippingAddress,
+            paymentMethod,
         });
 
         const orderItems = cartItens.map((item) => ({

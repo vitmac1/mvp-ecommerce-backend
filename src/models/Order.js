@@ -8,9 +8,10 @@ module.exports = (sequelize) => {
             shippingCost: DataTypes.DECIMAL(10, 2),
             status: {
                 type: DataTypes.STRING,
-                defaultValue: "pendente",
+                defaultValue: "aprovado",
             },
             shippingAddress: DataTypes.STRING,
+            paymentMethod: DataTypes.STRING,
         },
         {
             tableName: "order",

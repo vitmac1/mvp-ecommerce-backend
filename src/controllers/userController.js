@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 // Autentica login de usuário
 const postLogin = async (req, res) => {
-    debugger;
     const { email, password } = req.body;
 
     try {
@@ -25,7 +24,7 @@ const postLogin = async (req, res) => {
             { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
         );
 
-        res.json({ token });
+        res.json({ token, admin: user.isAdmin || false });
     } catch (err) {
         res.status(500).json({ error: "Erro no login", details: err.message });
     }
